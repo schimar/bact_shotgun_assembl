@@ -1,0 +1,57 @@
+from snakemake.utils import min_version
+
+##### set minimum snakemake version #####
+min_version("7.0.0")
+
+
+##### setup report #####
+configfile: "../config/config.yaml"
+
+
+report: "report/workflow.rst"
+
+
+##### setup singularity #####
+
+
+# this container defines the underlying OS for each job when using the workflow
+# with --use-conda --use-singularity
+# container: "docker://continuumio/miniconda3"
+
+
+
+
+include: "rules/common.smk"
+include: "rules/qc.smk"
+include: "rules/trim.smk"
+include: "rules/assembl.smk"
+include: "rules/classify.smk"
+
+
+ids = ["SRR10053378"]		#"SRR3091420 SRR3091421".split()
+#	['20221017-MSA-4000_S33_L001', '20221017-MSA-4000_S33_L002']
+
+##### target rules #####
+
+rule all:
+    input:
+	    ### include lanes in {sample}
+	    #expand("results/qc/fastqc/{sample}_{read}_001_fastqc.html", sample= ['20221121-AA-29_S6_L001', '20221121-AA-29_S6_L002', '20221017-MSA-4000_S33_L001', '20221017-MSA-4000_S33_L002'], read= ['R1', 'R2']),
+	    #expand("results/trimmed/{sample}.{read}.fq.gz", sample= ['20221121-AA-29_S6_L001', '20221121-AA-29_S6_L002', '20221017-MSA-4000_S33_L001', '20221017-MSA-4000_S33_L002'], read= [1, 2]),
+	    expand("results/bbnorm/{sample}_{read}nrm.fq.gz", sample= ids, read= [1,2]),	
+		# no lanes from here
+	    #expand("results/fqcat/{sample}.{read}.fq.gz", sample= ids, read= [1, 2]),		#'20221121-AA-29_S6', 
+	    expand("results/quast/{sample}/report.txt", sample= ids),
+	    expand("results/spades/{sample}/contigs.fasta", sample= ids),
+	    expand("results/prokka/{sample}/prok.gff", sample= ids),
+	    expand("results/prokka/{sample}/prok_noSeq.gff", sample= ids),
+		### classify
+	    expand("results/kraken/{sample}.krak.report", sample= ids),
+	    expand("results/bracken/{sample}.krak.report.bracken", sample= ids),	# _bracken_species.report
+	    expand("results/krona/{sample}.html", sample= ids),
+
+
+
+	
+
+
