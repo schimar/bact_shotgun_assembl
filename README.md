@@ -1,4 +1,4 @@
-# RNA fusion quant 
+# bacterial shotgun assembly  
 
 ======================================================
 
