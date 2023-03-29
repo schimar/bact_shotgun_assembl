@@ -13,31 +13,31 @@ run on your local machine:
 4) do a dry-run and check if the right jobs are to be run  
 
 ```
-snakemake -npr --config runID="20230125_RNASeq"
+snakemake -npr"		 #--config runID="20230125_RNASeq"
 
 ```
 
 5) run the job locally (choose the correct runID - this can be found in the SampleSheet.csv)
 ```
-time snakemake -j48 --config runID="20230125_RNASeq"
+time snakemake -j48"	" --config runID="20230125_RNASeq"
 ```
 
 ======================================================
 
-## conda/mamba and other [dependencies](https://github.com/schimar/rna_fusion_quant/blob/main/workflow/envs/s7.yaml)   
+## conda/mamba and other [dependencies](https://github.com/schimar/bact_shotgun_assembl/blob/main/workflow/envs/bsa.yaml)   
 
 create environment from yaml file (in envs/):
 ```
 # create the environment (note that conda & mamba have to be installed for this to work):
 
-mamba env create -f envs/s6.yaml
+mamba env create -f envs/bsa.yaml
 
 # with this, you can activate the environment with all [dependencies](https://github.com/schimar/rna_fusion_quant/blob/main/workflow/envs/s7.yaml):
-conda activate smk6
+mamba activate bsa
 
 
 # if you've added new software to install to the conda environment, then you can update:
-mamba env update -f envs/s7.yaml
+mamba env update -f envs/bsa.yaml
 ```
 
 ## with SLURM, submit the job:
