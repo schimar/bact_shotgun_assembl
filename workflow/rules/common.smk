@@ -4,6 +4,9 @@ import pandas as pd
 #from snakemake.remote import FTP
 from snakemake.utils import validate
 
+ids = config['ids']
+runID = config['runID']
+
 
 # from https://benlangmead.github.io/aws-indexes/k2
 kraken_db = "/mnt/illumina/development/kraken/database/k2_pluspf_20220607/"
@@ -17,41 +20,41 @@ fqDir = "../" #"/mnt/illumina/archive/validation/NovaSeq_Mikrobiom/221122*/"
 
 # ---------------------
 
-validate(config, schema="../../config/schemas/config.schema.yaml")
+#validate(config, schema="../../config/schemas/config.schema.yaml")
 
-samples = (
-    pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
-    .set_index("sample_name", drop=False)
-    .sort_index()
-)
-
-
-def get_final_output():
-    final_output = "resources/genome.fa",
-    #expand("results/arriba/{sample}/fusions.tsv", sample= ids)
-    #final_output = expand(
-    #    "results/diffexp/{contrast}.diffexp.symbol.tsv",
-    #    contrast=config["diffexp"]["contrasts"],
-    #)
-    #final_output.append("results/deseq2/normcounts.symbol.tsv")
-    #final_output.append("results/counts/all.symbol.tsv")
-    return final_output
+#samples = (
+#    pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
+#    .set_index("sample_name", drop=False)
+#    .sort_index()
+#)
 
 
-validate(samples, schema="../../config/schemas/samples.schema.yaml")
+#def get_final_output():
+#    final_output = "resources/genome.fa",
+#    #expand("results/arriba/{sample}/fusions.tsv", sample= ids)
+#    #final_output = expand(
+#    #    "results/diffexp/{contrast}.diffexp.symbol.tsv",
+#    #    contrast=config["diffexp"]["contrasts"],
+#    #)
+#    #final_output.append("results/deseq2/normcounts.symbol.tsv")
+#    #final_output.append("results/counts/all.symbol.tsv")
+#    return final_output
 
-units = (
-    pd.read_csv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
-    .set_index(["sample_name", "unit_name"], drop=False)
-    .sort_index()
-)
-validate(units, schema="../../config/schemas/units.schema.yaml")
 
-samples_dict = dict(zip(units['sample_name'], zip(units['fq1'], units['fq2'])))
+#validate(samples, schema="../../config/schemas/samples.schema.yaml")
+
+#units = (
+#    pd.read_csv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
+#    .set_index(["sample_name", "unit_name"], drop=False)
+#    .sort_index()
+#)
+#validate(units, schema="../../config/schemas/units.schema.yaml")
 #
-def getFqHome(sample):
-  #return(list(os.path.join(samples_dict[sample],"{0}_{1}_001.fastq.gz".format(sample,pair)) for pair in ['R1','R2']))
-  return(sorted(list(samples_dict[sample])))
+#samples_dict = dict(zip(units['sample_name'], zip(units['fq1'], units['fq2'])))
+##
+#def getFqHome(sample):
+#  #return(list(os.path.join(samples_dict[sample],"{0}_{1}_001.fastq.gz".format(sample,pair)) for pair in ['R1','R2']))
+#  return(sorted(list(samples_dict[sample])))
 #
 #def getTrmHome(sample):
 #  return(list(os.path.join('trm', "{0}_{1}.fq.gz".format(sample,pair)) for pair in ['R1','R2']))

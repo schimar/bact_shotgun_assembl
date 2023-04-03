@@ -1,8 +1,8 @@
 rule bcl2fastq:
     input:
-        rundir = "/mnt/illumina/230209_A01272_0035_BHTVFGDRX2/",
+        rundir = config['runDIR'],  #"/mnt/illumina/230209_A01272_0035_BHTVFGDRX2/",
     output:
-        expand("results/bcl2fq/{runid}/{sample}_{lane}_{read}_001.fastq.gz", sample = list(samples_dict.keys()), lane = ['L001', 'L002'], read = ['R1', 'R2'], runid = config['runID']),
+        expand("results/bcl2fq/{runid}/{sample}_{lane}_{read}_001.fastq.gz", sample = ids, lane = ['L001', 'L002'], read = ['R1', 'R2'], runid = config['runID']),
     params:
         outdir = "results/bcl2fq/",
     #log:
